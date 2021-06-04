@@ -16,7 +16,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -33,7 +35,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             ComposeAnimatedSplashScreenTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colors.background) {
+                Surface(color = Color.Transparent) {
                     SplashScreen()
                 }
             }
@@ -65,6 +67,17 @@ fun SplashScreen() {
             repeatMode = RepeatMode.Restart
         )
     )
+    val shadowOffset by rememberInfiniteTransition().animateFloat(
+        initialValue = 1f,
+        targetValue = 0f,
+        animationSpec = InfiniteRepeatableSpec(
+            animation = TweenSpec(
+                durationMillis = 5000,
+                easing = LinearOutSlowInEasing
+            ),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -91,7 +104,12 @@ fun SplashScreen() {
                 style = TextStyle(
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 35.sp
+                    fontSize = 35.sp,
+                    shadow = Shadow(
+                        blurRadius = 10f,
+                        color = Color.Black,
+                        offset = Offset(x = shadowOffset, y = shadowOffset)
+                    )
                 )
             )
         }
